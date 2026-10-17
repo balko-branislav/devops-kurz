@@ -1,0 +1,15 @@
+name: Moje Prve CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  testovanie:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stiahnutie kodu z repozitara
+        uses: actions/checkout@v4
+
+      - name: Spustenie testovacieho príkazu
+        run: echo "CI/CD Test prebehol uspešne na servery GitHubu!"
