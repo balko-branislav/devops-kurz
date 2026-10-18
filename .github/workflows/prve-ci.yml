@@ -1,4 +1,30 @@
-name: CI - Docker Build Test
+name: CI/CD - Build and Push to Docker Hub
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stiahnutie kodu
+        uses: actions/checkout@v4
+
+      - name: Prihlasenie do Docker Hubu
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Zostavenie a publikacia Docker Obrazu
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/moja-app:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/moja-app:${{ github.sha }}name: CI - Docker Build Test
 
 on:
   push:
