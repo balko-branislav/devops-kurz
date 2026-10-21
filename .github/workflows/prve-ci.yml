@@ -1,8 +1,7 @@
 name: CI/CD - Build and Push to Docker Hub
 
-#on:
-#  push:
-#    branches: [ main ]
+on:
+  workflow_dispatch:
 
 jobs:
   build-and-push:
