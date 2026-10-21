@@ -1,3 +1,9 @@
+# terraform/main.tf
+variable "image_tag" {
+  type    = string
+  default = "latest"
+}
+
 terraform {
   required_providers {
     docker = {
@@ -9,17 +15,12 @@ terraform {
 
 provider "docker" {}
 
-resource "docker_image" "nginx" {
-  name         = "nginx:alpine"
-  keep_locally = false
-}
-
-resource "docker_container" "nginx" {
-  image = docker_image.nginx.image_id
-  name  = "ci-cd-tf-web"
+resource "docker_container" "app" {
+  image = "nginx:${var.image_tag}"
+  name  = "e2e-produkcia-app"
 
   ports {
     internal = 80
-    external = 8099
+    external = 8080
   }
 }
