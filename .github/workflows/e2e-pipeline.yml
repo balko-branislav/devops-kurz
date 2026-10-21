@@ -1,0 +1,33 @@
+name: End-to-End DevOps Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  e2e-deploy:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./terraform
+
+    steps:
+      - name: 1. Krok - Stiahnutie kódu
+        uses: actions/checkout@v4
+
+      - name: 2. Krok - Nastavenie Terraform CLI
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      - name: 3. Krok - Inicializácia Terraformu
+        run: terraform init
+
+      - name: 4. Krok - Kontrola a validácia
+        run: |
+          terraform fmt -check
+          terraform validate
+
+      - name: 5. Krok - Aplikovanie infraštruktúry (Apply)
+        run: terraform apply -var="image_tag=alpine" -auto-approve
